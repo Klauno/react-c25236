@@ -18,11 +18,14 @@ export default function Moda({ agregarAlCarrito }) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Moda</h2>
+  <div>
+    <h2>Moda</h2>
+    <div className="product-list">
       {productos.map(prod => (
         <Producto key={prod.id} producto={prod} agregarAlCarrito={agregarAlCarrito} />
       ))}
     </div>
-  );
+  </div>
+);
+
 }
