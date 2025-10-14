@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-export default function Layout({ children, onLogout, isAuthenticated }) {
+export default function Layout({ children, onLogout, isAuthenticated, carritoCount }) {
   return (
     <div style={{
       display: 'flex',
@@ -18,7 +18,7 @@ export default function Layout({ children, onLogout, isAuthenticated }) {
         boxSizing: 'border-box',
         backgroundColor: '#0078d7'
       }}>
-        <Navbar />
+        <Navbar carritoCount={carritoCount} />  {/* Solo Navbar aquí */}
         {isAuthenticated && (
           <button onClick={onLogout} style={{
             backgroundColor: '#c0392b',
@@ -37,7 +37,7 @@ export default function Layout({ children, onLogout, isAuthenticated }) {
       <main style={{ flex: 1, padding: '20px' }}>
         {children}
       </main>
-      
+
       <Footer />
     </div>
   );

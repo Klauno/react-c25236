@@ -10,100 +10,73 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [carrito, setCarrito] = useState(() => {
-    const savedCarrito = localStorage.getItem('carrito');
-    return savedCarrito ? JSON.parse(savedCarrito) : [];
-  });
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('isAuthenticated') === 'true';
+    const saved = localStorage.getItem('carrito');
+    return saved ? JSON.parse(saved) : [];
   });
 
-  useEffect(() => {
-    localStorage.setItem('isAuthenticated', isAuthenticated ? 'true' : 'false');
-  }, [isAuthenticated]);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('isAuthenticated') === 'true');
 
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
 
+  useEffect(() => {
+    localStorage.setItem('isAuthenticated', isAuthenticated ? 'true' : 'false');
+  }, [isAuthenticated]);
+
   const agregarAlCarrito = (producto) => {
-    setCarrito((prev) => {
-      const existe = prev.find(p => p.id === producto.id);
-      if (existe) {
-        return prev.map(p =>
-          p.id === producto.id ? { ...p, cantidad: (p.cantidad || 1) + 1 } : p
-        );
-      }
-      return [...prev, { ...producto, cantidad: 1 }];
+    setCarrito(prev => {
+      const exist = prev.find(p => p.id === producto.id);
+      if (exist) return prev.map(p => p.id === producto.id ? {...p, cantidad: p.cantidad + 1} : p);
+      return [...prev, {...producto, cantidad: 1}];
     });
   };
 
-  const aumentarCantidad = (id) => {
-    setCarrito(prev =>
-      prev.map(p => p.id === id ? { ...p, cantidad: p.cantidad + 1 } : p)
-    );
-  };
+  const aumentarCantidad = (id) => setCarrito(prev => prev.map(p => p.id === id ? {...p, cantidad: p.cantidad + 1} : p));
 
-  const disminuirCantidad = (id) => {
-    setCarrito(prev =>
-      prev
-        .map(p => {
-          if (p.id === id) {
-            const nuevaCantidad = p.cantidad - 1;
-            return nuevaCantidad > 0 ? { ...p, cantidad: nuevaCantidad } : null;
-          }
-          return p;
-        })
-        .filter(p => p !== null)
-    );
-  };
+  const disminuirCantidad = (id) => setCarrito(prev => prev.map(p => {
+    if (p.id === id) {
+      const newQty = p.cantidad - 1;
+      return newQty > 0 ? {...p, cantidad: newQty} : null;
+    }
+    return p;
+  }).filter(Boolean));
 
-  const eliminarDelCarrito = (id) => {
-    setCarrito((prev) => prev.filter(p => p.id !== id));
-  };
+  const eliminarDelCarrito = (id) => setCarrito(prev => prev.filter(p => p.id !== id));
 
-  const handleLogin = () => setIsAuthenticated(true);
-  const handleLogout = () => {
-    setIsAuthenticated(false);
+  // Función para vaciar el carrito correctamente
+  const vaciarCarrito = () => {
     setCarrito([]);
     localStorage.removeItem('carrito');
   };
 
+  const handleLogin = () => setIsAuthenticated(true);
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    vaciarCarrito(); // Limpia también carrito al cerrar sesión
+    localStorage.removeItem('isAuthenticated');
+  };
+
+  const carritoCount = carrito.reduce((total, p) => total + p.cantidad, 0);
+
   return (
     <BrowserRouter>
-      <Layout onLogout={handleLogout} isAuthenticated={isAuthenticated}>
+      <Layout onLogout={handleLogout} isAuthenticated={isAuthenticated} carritoCount={carritoCount}>
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/moda" element={<Moda agregarAlCarrito={agregarAlCarrito} />} />
           <Route path="/producto/:id" element={<DetalleProducto agregarAlCarrito={agregarAlCarrito} />} />
-
-          <Route
-            path="/login"
-            element={<LoginWrapper isAuthenticated={isAuthenticated} onLogin={handleLogin} />}
-          />
-
-          <Route
-            path="/carrito"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <CarritoPage
-                  carrito={carrito}
-                  aumentarCantidad={aumentarCantidad}
-                  disminuirCantidad={disminuirCantidad}
-                  eliminarDelCarrito={eliminarDelCarrito}
-                />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <h2>Checkout</h2>
-              </ProtectedRoute>
-            }
-          />
-
+          <Route path="/login" element={<LoginWrapper isAuthenticated={isAuthenticated} onLogin={handleLogin} />} />
+          <Route path="/carrito" element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <CarritoPage carrito={carrito} aumentarCantidad={aumentarCantidad} disminuirCantidad={disminuirCantidad}
+                eliminarDelCarrito={eliminarDelCarrito} vaciarCarrito={vaciarCarrito} />
+            </ProtectedRoute>} />
+          <Route path="/checkout" element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <h2>Checkout</h2>
+            </ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>
@@ -117,10 +90,9 @@ function LoginWrapper({ isAuthenticated, onLogin }) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      navigate(location.state?.from?.pathname || '/', { replace: true });
     }
-  }, [isAuthenticated, navigate, location]);
+  }, [isAuthenticated]);
 
   return <Login onLogin={onLogin} />;
 }
