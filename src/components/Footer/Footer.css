@@ -1,0 +1,63 @@
+.custom-footer {
+  background-color: #7c3b96 !important; /* violeta oscuro */
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Links del footer */
+.footer-link {
+  background: none;
+  border: none;
+  color: #f5e1f8;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #e2c0f0;
+  text-decoration: underline;
+}
+
+/* Modal personalizado */
+.custom-modal .modal-content {
+  background-color: #f9f5fc;
+  border-radius: 12px;
+  border: none;
+}
+
+.modal-header-custom {
+  background-color: #8e44ad;
+  color: #fff;
+  border-bottom: none;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modal-body-custom {
+  color: #4b0082;
+  font-size: 0.95rem;
+}
+
+.modal-footer-custom {
+  border-top: none;
+}
+
+/* Botón cerrar modal */
+.btnCerrar {
+  background-color: #9b089b !important; /* rojo */
+  border: none !important;
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 6px 18px rgba(46, 2, 44, 0.4) !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.btnCerrar:hover,
+.btnCerrar:focus {
+  background-color: #9753a5 !important; /* rojo oscuro */
+  box-shadow: 0 6px 18px rgba(63, 3, 55, 0.6) !important;
+  color: white !important;
+}

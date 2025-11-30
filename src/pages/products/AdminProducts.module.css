@@ -1,0 +1,37 @@
+.btnEditar {
+  background-color: #8e44ad !important; /* violeta */
+  border: none !important;
+  color: rgb(255, 255, 255) !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.4) !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  text-transform: uppercase !important;
+}
+
+.btnEditar:hover,
+.btnEditar:focus {
+  background-color: #9046af !important; /* violeta más oscuro */
+  box-shadow: 0 6px 16px rgba(178, 11, 250, 0.6) !important;
+  color: white !important;
+}
+
+.btnEliminar {
+  background-color: #d63c3c !important; /* rojo */
+  border: none !important;
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 6px 16px rgba(189, 29, 29, 0.4) !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  text-transform: uppercase !important;
+}
+
+.btnEliminar:hover,
+.btnEliminar:focus {
+  background-color: #a62828 !important; /* rojo oscuro */
+  box-shadow: 0 6px 16px rgba(124, 28, 28, 0.6) !important;
+  color: white !important;
+}

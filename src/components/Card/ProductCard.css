@@ -1,0 +1,100 @@
+.product-card {
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+}
+
+.product-title {
+  font-weight: 600;
+  color: #4b0082;
+}
+.product-price {
+  color: #800080;
+}
+
+.btn-add-cart {
+  background-color: #8e44ad !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.4) !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  text-transform: uppercase !important;
+}
+
+.btn-add-cart:hover,
+.btn-add-cart:focus {
+  background-color: #9046af !important;
+  box-shadow: 0 6px 16px rgba(178, 11, 250, 0.6) !important;
+}
+
+.btn-add-cart:disabled {
+  background-color: #d9b3ff !important;
+  color: #800080 !important;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+.btn-view-desc {
+  background-color: #f5e1f8 !important;
+  color: #800080 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.35rem 0.9rem !important;
+  box-shadow: 0 3px 6px rgba(142, 68, 173, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-view-desc:hover,
+.btn-view-desc:focus {
+  background-color: #e2c0f0 !important;
+  color: #4b0082 !important;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 12px !important;
+  background-color: #f9f5fc !important;
+  color: #4b0082 !important;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(142, 68, 173, 0.3);
+}
+
+.modal-header {
+  border-bottom: none !important;
+}
+
+.modal-title {
+  font-weight: 700;
+  color: #800080 !important;
+}
+
+.modal-body p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #4b0082 !important;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #f5e1f8 !important;
+  color: #800080 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.modal-footer .btn-secondary:hover,
+.modal-footer .btn-secondary:focus {
+  background-color: #e2c0f0 !important;
+  color: #4b0082 !important;
+}

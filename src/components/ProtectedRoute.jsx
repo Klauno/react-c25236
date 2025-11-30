@@ -1,8 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { LoadingSpinner } from './LoadingSpinner';
 
-export default function ProtectedRoute({ children, isAuthenticated }) {
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+export default function ProtectedRoute() {
+  const { authorized, isLoading } = useAuth();
+
+  // Estado inicial - esperando verificación
+  if (authorized === null || isLoading) {
+    return <LoadingSpinner text="Verificando..."/>;
   }
-  return children;
+
+  return authorized ? <Outlet /> : <Navigate to="/login" replace />;
 }
