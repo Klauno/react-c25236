@@ -1,5 +1,5 @@
 .customNavbar {
-  background-color: #7c3b96 !important; /* violeta principal */
+  background-color: hsl(284, 40%, 62%) !important; /* violeta principal */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   padding: 0.8rem 1rem !important;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
