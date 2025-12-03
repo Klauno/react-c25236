@@ -130,4 +130,3 @@ const ClienteModal = ({ show, onClose, onSuccess }) => {
 };
 
 export default ClienteModal;
-

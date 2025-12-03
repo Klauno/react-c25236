@@ -8,7 +8,7 @@ import ClienteModal from "../../components/ClienteModal";
 import "./Cart.css";
 
 const Cart = () => {
-  const { cart, isLoadingCart, removeFromCart, updateQuantity, calculateTotal, clearCart } = useCart();
+  const { cart, isLoadingCart, removeFromCart, updateQuantity, calculateTotal, clearCart, getStockRemaining } = useCart();
   const navigate = useNavigate();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -34,17 +34,19 @@ const Cart = () => {
   const handleDecrease = (item) => {
     if (item.quantity > 1) {
       updateQuantity(item.id, item.quantity - 1);
-      item.cantidad += 1; // Stock local
     } else {
       handleDeleteClick(item);
     }
   };
 
+  // 🔥 BLOQUEA EN 0 + ALERT
   const handleIncrease = (item) => {
-    if (item.cantidad > 0) {
-      updateQuantity(item.id, item.quantity + 1);
-      item.cantidad -= 1; // Stock local
+    const stockRestante = getStockRemaining(item.id);
+    if (stockRestante <= 0) {
+      alert(`No hay más stock disponible para "${item.title}"\nStock: ${item.cantidad} unidades`);
+      return;
     }
+    updateQuantity(item.id, item.quantity + 1);
   };
 
   const handleOpenClienteModal = () => setShowClienteModal(true);
@@ -56,7 +58,6 @@ const Cart = () => {
       fecha: new Date().toLocaleString(),
     };
     localStorage.setItem("ultimaOrden", JSON.stringify(orden));
-
     clearCart();
     setShowClienteModal(false);
     navigate("/gracias");
@@ -82,44 +83,63 @@ const Cart = () => {
         </Card.Header>
         <Card.Body>
           <ListGroup variant="flush">
-            {cart.map((item) => (
-              <ListGroup.Item key={item.id} className="cart-item-card py-3">
-                <Row className="align-items-center">
-                  <Col xs={3} md={2}>
-                    <Image src={item.image} fluid thumbnail className="cart-item-image" />
-                  </Col>
-                  <Col xs={4} md={4}>
-                    <h6 className="mb-1">{item.title}</h6>
-                    <small className="text-muted">{item.category}</small>
-                  </Col>
-                  <Col xs={2} className="text-end">
-                    <span className="fw-bold">${Number(item.price).toFixed(2)}</span>
-                  </Col>
-                  <Col xs={3} md={2}>
-                    <div className="d-flex align-items-center">
-                      <Button size="sm" onClick={() => handleDecrease(item)} className="cart-quantity-btn">
-                        -
+            {cart.map((item) => {
+              const stockRestante = getStockRemaining(item.id);
+              const sinStock = stockRestante <= 0;
+              
+              return (
+                <ListGroup.Item key={item.id} className="cart-item-card py-3">
+                  <Row className="align-items-center">
+                    <Col xs={3} md={2}>
+                      <Image src={item.image} fluid thumbnail className="cart-item-image" />
+                    </Col>
+                    <Col xs={4} md={4}>
+                      <h6 className="mb-1">{item.title}</h6>
+                      <small className="text-muted">{item.category}</small>
+                    </Col>
+                    <Col xs={2} className="text-end">
+                      <span className="fw-bold">${Number(item.price).toFixed(2)}</span>
+                    </Col>
+                    <Col xs={3} md={2}>
+                      <div className="d-flex align-items-center">
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleDecrease(item)} 
+                          className="cart-quantity-btn"
+                        >
+                          -
+                        </Button>
+                        <input 
+                          type="number" 
+                          value={item.quantity} 
+                          readOnly 
+                          className="form-control form-control-sm mx-1" 
+                        />
+                        <Button 
+                          size="sm" 
+                          className={`cart-quantity-btn ${sinStock ? 'opacity-50' : ''}`}
+                          onClick={() => handleIncrease(item)}
+                          disabled={sinStock}
+                          title={sinStock ? "Sin stock disponible" : "Agregar más"}
+                        >
+                          +
+                        </Button>
+                      </div>
+                      {/* 🔥 STOCK VISUAL CON COLOR */}
+                      <small className={`cart-item-stock mt-1 d-block ${sinStock ? 'text-danger fw-bold' : 'text-info'}`}>
+                        📦 {stockRestante}/{item.cantidad} disponibles
+                        {sinStock && ' (agotado)'}
+                      </small>
+                    </Col>
+                    <Col xs={1} className="text-end">
+                      <Button onClick={() => handleDeleteClick(item)} className="cart-remove-btn">
+                        <FaTrash />
                       </Button>
-                      <input type="number" value={item.quantity} readOnly className="form-control form-control-sm mx-1" />
-                      <Button
-                        size="sm"
-                        className="cart-quantity-btn"
-                        onClick={() => handleIncrease(item)}
-                        disabled={item.cantidad <= 0}
-                      >
-                        +
-                      </Button>
-                    </div>
-                    <small className="cart-item-stock">Stock: {item.cantidad}</small>
-                  </Col>
-                  <Col xs={1} className="text-end">
-                    <Button onClick={() => handleDeleteClick(item)} className="cart-remove-btn">
-                      <FaTrash />
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              );
+            })}
           </ListGroup>
 
           <div className="mt-4 cart-total-panel">
@@ -138,13 +158,13 @@ const Cart = () => {
         </Card.Body>
       </Card>
 
-      {/* Modal de eliminación */}
+      {/* Modal eliminar */}
       <Modal show={showDeleteModal} onHide={handleCancelDelete} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Deseas eliminar "{itemToDelete?.title}" del carrito?
+          ¿Deseas eliminar "<strong>{itemToDelete?.title}</strong>" del carrito?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelDelete}>Cancelar</Button>
@@ -152,7 +172,7 @@ const Cart = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal de datos del cliente */}
+      {/* Modal cliente */}
       <ClienteModal
         show={showClienteModal}
         onClose={() => setShowClienteModal(false)}
@@ -163,4 +183,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
