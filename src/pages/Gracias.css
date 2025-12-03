@@ -1,0 +1,69 @@
+.gracias-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+  padding: 20px;
+  background-color: #f9f5fc;
+  color: #4b0082;
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gracias-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(142, 68, 173, 0.4);
+}
+
+.gracias-card h2 {
+  color: #8e44ad;
+  font-weight: 700;
+}
+
+.gracias-card p {
+  color: #800080;
+  margin-bottom: 20px;
+}
+
+.gracias-table {
+  margin-top: 20px;
+  background-color: #f3e9fb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gracias-table th {
+  background-color: #d9b3ff;
+  color: #4b0082;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gracias-table td {
+  text-align: center;
+  color: #4b0082;
+}
+
+.gracias-table tr:last-child td {
+  font-weight: bold;
+  background-color: #e6ccff;
+}
+
+.gracias-btn {
+  background-color: #8e44ad !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 1.5rem !important;
+  font-weight: 600 !important;
+  margin-top: 15px;
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gracias-btn:hover,
+.gracias-btn:focus {
+  background-color: #9046af !important;
+  box-shadow: 0 6px 16px rgba(178, 11, 250, 0.6) !important;
+}
