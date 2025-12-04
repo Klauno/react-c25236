@@ -60,10 +60,51 @@
   margin-top: 15px;
   box-shadow: 0 4px 8px rgba(142, 68, 173, 0.4);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 250px;
 }
 
 .gracias-btn:hover,
 .gracias-btn:focus {
   background-color: #9046af !important;
   box-shadow: 0 6px 16px rgba(178, 11, 250, 0.6) !important;
+}
+
+/* RESPONSIVE PARA MÓVILES */
+@media (max-width: 576px) {
+  .gracias-card {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .gracias-card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .gracias-card h5 {
+    font-size: 1.1rem;
+  }
+  
+  .gracias-table {
+    font-size: 0.85rem;
+    margin-top: 15px;
+  }
+  
+  .gracias-table th,
+  .gracias-table td {
+    padding: 0.4rem 0.3rem;
+    white-space: nowrap;
+    font-size: 0.8rem;
+  }
+  
+  .gracias-btn {
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gracias-card p {
+    font-size: 0.95rem;
+  }
 }

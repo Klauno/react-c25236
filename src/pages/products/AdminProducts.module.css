@@ -1,37 +1,237 @@
-.btnEditar {
-  background-color: #8e44ad !important; /* violeta */
-  border: none !important;
-  color: rgb(255, 255, 255) !important;
-  border-radius: 12px !important;
-  font-weight: 600 !important;
-  padding: 0.4rem 1rem !important;
-  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.4) !important;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
-  text-transform: uppercase !important;
+.adminContainer {
+  background: linear-gradient(135deg, #f9f5fc 0%, #e8daf2 100%);
+  min-height: 100vh;
+  padding: 2rem 1rem;
 }
 
-.btnEditar:hover,
-.btnEditar:focus {
-  background-color: #9046af !important; /* violeta más oscuro */
-  box-shadow: 0 6px 16px rgba(178, 11, 250, 0.6) !important;
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .headerSection {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.pageTitle {
+  color: #4b0082;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(142, 68, 173, 0.2);
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(142, 68, 173, 0.15);
+  overflow: hidden;
+  border: 1px solid rgba(142, 68, 173, 0.1);
+}
+
+.productsTable {
+  margin: 0 !important;
+}
+
+.productsTable thead th {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem 0.75rem;
+  border: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.productsTable tbody tr {
+  transition: all 0.2s ease;
+}
+
+.productsTable tbody tr:hover {
+  background-color: #f8f4ff;
+  transform: scale(1.01);
+}
+
+.productRow {
+  border-bottom: 1px solid #e9d5f5;
+}
+
+.productTitle {
+  font-weight: 600;
+  color: #4b0082;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productPrice {
+  font-weight: 700;
+  color: #8e44ad;
+  font-size: 1.1rem;
+}
+
+.productImage {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #d9b3ff;
+  box-shadow: 0 2px 8px rgba(142, 68, 173, 0.2);
+}
+
+.noImage {
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.actionsContainer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btnEditar, .btnEliminar {
+  border: none !important;
   color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-transform: none !important;
+  font-size: 0.85rem;
+}
+
+.btnEditar {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6) !important;
+}
+
+.btnEditar:hover {
+  background: linear-gradient(135deg, #9046af, #a569bd) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.4) !important;
 }
 
 .btnEliminar {
-  background-color: #d63c3c !important; /* rojo */
+  background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+}
+
+.btnEliminar:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4) !important;
+}
+
+.btnSm {
+  padding: 0.4rem 0.8rem !important;
+  font-size: 0.8rem !important;
+}
+
+.btnLg {
+  padding: 0.75rem 2rem !important;
+  font-size: 1rem !important;
+  width: 100%;
+}
+
+.btnCancel {
+  background: #6c757d !important;
   border: none !important;
   color: white !important;
   border-radius: 12px !important;
+  padding: 0.75rem 1.5rem !important;
   font-weight: 600 !important;
-  padding: 0.4rem 1rem !important;
-  box-shadow: 0 6px 16px rgba(189, 29, 29, 0.4) !important;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
-  text-transform: uppercase !important;
 }
 
-.btnEliminar:hover,
-.btnEliminar:focus {
-  background-color: #a62828 !important; /* rojo oscuro */
-  box-shadow: 0 6px 16px rgba(124, 28, 28, 0.6) !important;
-  color: white !important;
+.btnCancel:hover {
+  background: #5a6268 !important;
+  transform: translateY(-2px);
+}
+
+.modalCustom .modal-content {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 20px 60px rgba(142, 68, 173, 0.3);
+}
+
+.modalHeader {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  color: white;
+  border-radius: 20px 20px 0 0 !important;
+  border-bottom: none;
+}
+
+.modalTitle {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.modalBody {
+  padding: 2rem;
+  background: #f9f5fc;
+}
+
+.formLabel {
+  color: #4b0082;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.formControl {
+  border: 2px solid #e1d4f2 !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 1rem;
+  transition: all 0.3s ease !important;
+}
+
+.formControl:focus {
+  border-color: #8e44ad !important;
+  box-shadow: 0 0 0 0.2rem rgba(142, 68, 173, 0.25) !important;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .adminContainer {
+    padding: 1rem 0.5rem;
+  }
+  
+  .productsTable thead th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .productImage {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .actionsContainer {
+    flex-direction: column;
+  }
+  
+  .modalBody {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerSection h2 {
+    text-align: center;
+  }
 }

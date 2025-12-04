@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Table, Modal, Form, Container, Alert } from "react-bootstrap";
+import { Button, Table, Modal, Form, Container, Alert, Row, Col } from "react-bootstrap";
 import {
   getProducts,
   createProduct,
@@ -9,7 +9,6 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { toast } from "react-toastify";
-
 import styles from "./AdminProducts.module.css";
 
 export const AdminProducts = () => {
@@ -89,7 +88,6 @@ export const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (!isAdmin) {
       toast.error("Solo los administradores pueden borrar productos");
-      setShowModal(false);
       return;
     }
     if (window.confirm("¿Estás seguro de eliminar este producto?")) {
@@ -118,69 +116,74 @@ export const AdminProducts = () => {
   }
 
   return (
-    <Container className="mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Administrar Productos</h2>
-        <Button
-          className={styles.btnEditar}
-          onClick={() => setShowModal(true)}
-        >
-          Agregar Producto
-        </Button>
-      </div>
+    <Container className={`${styles.adminContainer} py-4`}>
+      <Row className="justify-content-center">
+        <Col xs={12} lg={10}>
+          <div className={`${styles.headerSection} mb-4`}>
+            <h2 className={styles.pageTitle}>Administrar Productos</h2>
+            <Button
+              className={styles.btnEditar}
+              onClick={() => setShowModal(true)}
+            >
+              ➕ Agregar Producto
+            </Button>
+          </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+          {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
 
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th className="d-none d-md-block">Descripción</th>
-            <th>imagen</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.title}</td>
-              <td>${product.price}</td>
-              <td className="d-none d-md-block">{product.description}</td>
-              <td>
-                {product.image && (
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      objectFit: "cover",
-                      borderRadius: "4px",
-                    }}
-                  />
-                )}
-              </td>
-              <td>
-                <Button
-                  className={`${styles.btnEditar} me-2`}
-                  size="sm"
-                  onClick={() => handleEdit(product)}
-                >
-                  Editar
-                </Button>
-                <Button
-                  className={styles.btnEliminar}
-                  size="sm"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Eliminar
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+          <div className={styles.tableContainer}>
+            <Table responsive className={`${styles.productsTable} mb-0`}>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th className="d-none d-lg-table-cell">Descripción</th>
+                  <th>Imagen</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id} className={styles.productRow}>
+                    <td className={styles.productTitle}>{product.title}</td>
+                    <td className={styles.productPrice}>${parseFloat(product.price).toFixed(2)}</td>
+                    <td className="d-none d-lg-table-cell">{product.description}</td>
+                    <td>
+                      {product.image ? (
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className={styles.productImage}
+                        />
+                      ) : (
+                        <span className={styles.noImage}>Sin imagen</span>
+                      )}
+                    </td>
+                    <td>
+                      <div className={styles.actionsContainer}>
+                        <Button
+                          className={`${styles.btnEditar} ${styles.btnSm}`}
+                          size="sm"
+                          onClick={() => handleEdit(product)}
+                        >
+                          ✏️ Editar
+                        </Button>
+                        <Button
+                          className={`${styles.btnEliminar} ${styles.btnSm}`}
+                          size="sm"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          🗑️ Eliminar
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
 
       <Modal
         show={showModal}
@@ -188,56 +191,76 @@ export const AdminProducts = () => {
           setShowModal(false);
           resetForm();
         }}
+        className={styles.modalCustom}
+        centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {currentProduct ? "Editar Producto" : "Nuevo Producto"}
+        <Modal.Header closeButton className={styles.modalHeader}>
+          <Modal.Title className={styles.modalTitle}>
+            {currentProduct ? "✏️ Editar Producto" : "➕ Nuevo Producto"}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={styles.modalBody}>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
+              <Form.Label className={styles.formLabel}>Nombre del Producto</Form.Label>
               <Form.Control
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
                 required
+                className={styles.formControl}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Precio</Form.Label>
+              <Form.Label className={styles.formLabel}>Precio ($)</Form.Label>
               <Form.Control
                 type="number"
+                step="0.01"
                 name="price"
                 value={formData.price}
                 onChange={handleInputChange}
                 required
+                className={styles.formControl}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Descripción</Form.Label>
+              <Form.Label className={styles.formLabel}>Descripción</Form.Label>
               <Form.Control
                 as="textarea"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={3}
+                className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>URL de la imagen</Form.Label>
+            <Form.Group className="mb-4">
+              <Form.Label className={styles.formLabel}>URL de la Imagen</Form.Label>
               <Form.Control
-                type="text"
+                type="url"
                 name="image"
                 value={formData.image}
                 onChange={handleInputChange}
+                className={styles.formControl}
+                placeholder="https://ejemplo.com/imagen.jpg"
               />
             </Form.Group>
-            <Button className={styles.btnEditar} type="submit">
-              Guardar
-            </Button>
+            <div className={styles.modalActions}>
+              <Button className={`${styles.btnEditar} ${styles.btnLg}`} type="submit">
+                💾 Guardar Producto
+              </Button>
+              <Button
+                variant="secondary"
+                className={styles.btnCancel}
+                onClick={() => {
+                  setShowModal(false);
+                  resetForm();
+                }}
+              >
+                ❌ Cancelar
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>

@@ -2,7 +2,6 @@ import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
-
 import styles from "./Header.module.css";
 
 function Header() {
@@ -16,17 +15,18 @@ function Header() {
     <Navbar
       expand="lg"
       fixed="top"
-      className={`${styles.customNavbar} navbar-dark`} // navbar-dark para texto claro
+      className={`${styles.customNavbar} navbar-dark`} 
     >
       <Container fluid>
-        {/* Cambié este Navbar.Brand a Button para mejor control de estilo */}
         <Button
           as={Link}
           to="/"
           className={styles.navbarBrandButton}
           variant="none"
         >
-          MiTienda
+          <span className={styles.logoIcon}>🌸</span>
+          <span>Lunaria</span>
+          <span className={styles.logoShop}>Mi Tienda</span>
         </Button>
 
         {/* Carrito visible en móvil */}
@@ -57,10 +57,9 @@ function Header() {
                   <Nav.Link
                     as={Link}
                     to="/admin/products"
-                    href="#link"
-                    className={`fw-bold border border-light border-3 rounded px-2 me-2`}
+                    className={styles.adminButton}
                   >
-                    Administrar
+                    🛠️ Administrar
                   </Nav.Link>
                 </Nav>
 

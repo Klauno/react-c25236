@@ -125,7 +125,7 @@ const Cart = () => {
                           +
                         </Button>
                       </div>
-                      {/* 🔥 STOCK VISUAL CON COLOR */}
+                     
                       <small className={`cart-item-stock mt-1 d-block ${sinStock ? 'text-danger fw-bold' : 'text-info'}`}>
                         📦 {stockRestante}/{item.cantidad} disponibles
                         {sinStock && ' (agotado)'}

@@ -14,40 +14,32 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // -------------------------------------------------------------------//
   const login = async (credentials) => {
     setIsLoading(true);
     try {
-      //obtener todos los usuarios
       const response = await fetch(API_URL);
       if (!response.ok) throw new Error("Error en la petición");
       const data = await response.json();
 
-      //filtrar usuario por email
       const userData = data.find(
         (user) => user.email === credentials.email.trim().toLowerCase()
       );
 
-      //verificar usuario y contraseña
       if (!userData) throw new Error("Usuario no encontrado");
       if (userData.password !== credentials.password)
         throw new Error("Contraseña incorrecta");
 
-      //borrar password de objeto userData
       const { password, ...safeUser } = userData;
 
-      //verificar si es administrador
       if (userData.email === "admin@mail.com") {
         setIsAdmin(true);
       }
 
-      // dar permisos
       setUser(safeUser);
       setAuthorized(true);
       localStorage.setItem("user", JSON.stringify(safeUser));
       return { success: true, user: safeUser };
     } catch (error) {
-      // borrar usuario y autorizaciones
       setUser(null);
       setAuthorized(false);
       return { success: false, message: error.message };
@@ -56,7 +48,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // -------------------------------------------------------------------//
   const logout = () => {
     setUser(null);
     setAuthorized(false);
@@ -65,44 +56,36 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
-  // -------------------------------------------------------------------//
   const clearSession = () => {
-    // Solo limpia la sesión sin redirigir
     setUser(null);
     setAuthorized(false);
     setIsAdmin(false);
     localStorage.removeItem("user");
   };
 
-  // -------------------------------------------------------------------//
   const register = async (credentials) => {
     try {
-      //verificar si usuario existe
       const response = await fetch(API_URL);
       if (!response.ok) throw new Error("Error en la petición");
       const data = await response.json();
 
-      //verificar usuario por email
       const userExists = data.find(
         (user) => user.email === credentials.email.trim().toLowerCase()
       );
       if (userExists) throw new Error("El email ya se encuentra registrado");
 
-      // datos de usuario nuevo
       const newUser = {
         name: credentials.name.trim(),
         email: credentials.email.trim().toLowerCase(),
         password: credentials.password.trim(),
       };
 
-      //crear usuario en db
       const postResponse = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
 
-      //verificar respuesta
       if (!postResponse.ok)
         throw new Error("Error al crear el usuario, intente nuevamente");
 
@@ -112,10 +95,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // -------------------------------------------------------------------//
   const checkAuth = async () => {
     try {
-      //recuperar datos local de usuario
       const credentials = localStorage.getItem("user");
       if (!credentials) {
         clearSession();
@@ -123,7 +104,6 @@ export const AuthProvider = ({ children }) => {
       }
       const localUserData = JSON.parse(credentials);
 
-      //buscar usuario en DB
       const response = await fetch(`${API_URL}/${localUserData.id}`);
       if (!response.ok) {
         clearSession();
@@ -131,7 +111,6 @@ export const AuthProvider = ({ children }) => {
       }
       const dbUserData = await response.json();
 
-      //verificar token
       if (dbUserData.token !== localUserData.token) {
         clearSession();
         throw new Error("Token no válido");
@@ -141,19 +120,18 @@ export const AuthProvider = ({ children }) => {
       setUser(localUserData);
     } catch (error) {
       clearSession();
-      toast.warm("Debes iniciar sesión nuevamente");
-      console.error("Error al validar sesión:");
+      toast.warn("Debes iniciar sesión nuevamente");
+      console.error("Error al validar sesión:", error);
     }
   };
 
-  // validar sesión en cada cambio de página
   useEffect(() => {
     const verifyAuth = async () => {
       try {
         setIsLoading(true);
         await checkAuth();
       } catch (error) {
-        console.error("Error al validar sesión:");
+        console.error("Error al validar sesión:", error);
       } finally {
         setIsLoading(false);
       }
@@ -162,16 +140,12 @@ export const AuthProvider = ({ children }) => {
     verifyAuth();
   }, [location.pathname]);
 
-  
-  // -------------------------------------------------------------------//
   const updateUser = async (userFormData) => {
     try {
-      // verificar si email existe
       const usersData = await fetch(API_URL);
       if (!usersData.ok) throw new Error("Error en la petición");
       const usersDataObject = await usersData.json();
 
-      //verificar usuario por email
       const userExists = usersDataObject.find(
         (user) =>
           user.email === userFormData.email.trim().toLowerCase() &&
@@ -180,8 +154,7 @@ export const AuthProvider = ({ children }) => {
 
       if (userExists) throw new Error("El email ya se encuentra registrado");
 
-      // actualizar usuario
-      const response = await fetch(`${API_URL}/${user.id}`, {
+      const response = await fetch(`${API_URL}/${userFormData.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -189,24 +162,19 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify(userFormData),
       });
 
-      // verificar respuesta
       if (!response.ok) {
         throw new Error("Error en la actualización");
       }
-      // convertir respuesta
       const newUser = await response.json();
 
-      // actualizar user y localstorage
       setUser(newUser);
       localStorage.setItem("user", JSON.stringify(newUser));
-      return { success: true, user: response.data };
+      return { success: true, user: newUser };
     } catch (error) {
       throw error;
     }
   };
 
-  //----------------------------------//
-  //----------------------------------//
   const deleteUser = async () => {
     try {
       const response = await fetch(`${API_URL}/${user.id}`, {

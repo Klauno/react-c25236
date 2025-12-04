@@ -1,99 +1,130 @@
 .customNavbar {
-  background-color: hsl(284, 40%, 62%) !important; /* violeta principal */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-  padding: 0.8rem 1rem !important;
+  background: linear-gradient(135deg, #7c3b96 0%, #8e44ad 50%, #9e1c47 100%) !important;
+  box-shadow: 0 2px 12px rgba(142, 68, 173, 0.3) !important; 
+  padding: 0.5rem 1rem !important; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  backdrop-filter: blur(10px);
 }
 
 .navbarBrandButton {
-  background-color: #7c3b96 !important; /* violeta principal */
-  color: #f8f8f8 !important;
-  font-weight: 700 !important;
-  font-size: 1.8rem !important;
-  letter-spacing: 2px !important;
+  background: linear-gradient(135deg, #ffffff22, #f8f8f822) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: clamp(1.2rem, 3vw, 1.6rem) !important;
+  letter-spacing: 1.5px !important; 
   font-style: italic !important;
-  padding: 0.6rem 1.8rem !important;
-  border-radius: 25px !important;
-  border: 3px solid #f8f8f8 !important; /* borde blanco fijo */
+  padding: 0.5rem 1.5rem !important;
+  border-radius: 40px !important; 
+  border: 3px solid rgba(255, 255, 255, 0.9) !important;
   cursor: pointer !important;
-  transition: background-color 0.3s ease !important;
-  display: inline-block !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.3rem; 
   text-decoration: none !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
 }
 
-.navbarBrandButton:hover,
-.navbarBrandButton:focus {
-  background-color: #ac1648 !important; /* rosa-lila fondo en hover */
-  color: #f8f8f8 !important;
-  border: 3px solid #f8f8f8 !important; /* mismo borde fijo */
-  text-decoration: none !important;
+.logoIcon {
+  font-size: 1.6rem !important; 
+  margin-right: 0.2rem;
+  display: inline-block;
+  animation: float 2.5s ease-in-out infinite; 
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
+  z-index: 2;
+  position: relative;
 }
 
-.customNavbar .nav-link {
-  color: #d9b3ff !important; /* lila suave */
-  font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  border: 3px solid transparent;
-  padding: 0.3rem 0.75rem;
-  border-radius: 25px;
+.logoShop {
+  background: linear-gradient(135deg, #ee9696, #f30e06) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 900 !important;
+  position: relative;
+  z-index: 2;
+  font-size: 0.95em !important; 
 }
 
-.customNavbar .nav-link:hover,
-.customNavbar .nav-link:focus {
-  background-color: #ac1648 !important; /* rosa-lila fondo */
-  color: #f8f8f8 !important;
-  border-color: #f8f8f8 !important; /* borde blanco en hover */
-  text-decoration: none;
+.adminButton {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important; 
+  padding: 0.6rem 1.2rem !important; 
+  border-radius: 20px !important;
+  background: linear-gradient(135deg, #ff4757, #ff3838, #d63031) !important;
+  border: 2px solid #ff6b7a !important; 
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3) !important; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.customNavbar .nav-link:not(.adminButton) {
+  color: #e8d5f8 !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  padding: 0.4rem 1rem !important; 
+  border-radius: 15px !important;
+  margin: 0 0.2rem;
+  font-size: 0.95rem !important;
 }
 
 .customNavbar .btn {
-  background-color: #8e44ad !important; /* violeta botón */
-  border: none !important;
-  color: white !important;
-  font-weight: 600 !important;
-  padding: 0.35rem 0.75rem !important;
-  border-radius: 25px !important;
-  transition: background-color 0.3s ease !important;
-}
-
-.customNavbar .btn:hover,
-.customNavbar .btn:focus {
-  background-color: #9046af !important; /* violeta más oscuro */
-  color: white !important;
+  padding: 0.4rem 1.2rem !important; 
+  font-size: 0.9rem !important;
+  border-radius: 20px !important;
 }
 
 .customNavbar .bi {
-  color: #f8f8f8 !important;
-  font-size: 1.5rem !important;
-  transition: color 0.3s ease !important;
-}
-
-.customNavbar .bi:hover {
-  color: #e91e63 !important;
+  color: #ffffff !important;
+  font-size: 1.4rem !important;
 }
 
 .customNavbar .navbar-toggler {
-  border-color: #f8f8f8 !important;
+  border: 2px solid rgba(255,255,255,0.8) !important;
+  border-radius: 10px !important;
+  padding: 0.4rem !important; 
 }
 
-.customNavbar .navbar-toggler-icon {
-  filter: invert(1) !important;
+.badge {
+  min-width: 18px !important; 
+  height: 18px !important;
+  font-size: 0.7rem !important;
+  top: -2px !important;
+  right: -8px !important;
 }
 
-.customNavbar .dropdown-menu {
-  background-color: #7c3b96 !important; /* violeta menú */
-  border: none !important;
-  border-radius: 6px !important;
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-5px) rotate(3deg); } 
+  66% { transform: translateY(-2px) rotate(-2deg); }
 }
 
-.customNavbar .dropdown-item {
-  color: #f3e9fb !important; /* lila claro */
-  font-weight: 500 !important;
-  transition: background-color 0.3s ease, color 0.3s ease !important;
-}
-
-.customNavbar .dropdown-item:hover,
-.customNavbar .dropdown-item:focus {
-  background-color: #ac1648 !important; /* rosa-lila */
-  color: white !important;
+/* MÓVIL - AÚN MÁS COMPACTO */
+@media (max-width: 991px) {
+  .customNavbar {
+    padding: 0.4rem 0.8rem !important;
+  }
+  
+  .navbarBrandButton {
+    padding: 0.4rem 1.2rem !important;
+    font-size: 1.1rem !important;
+  }
+  
+  .logoIcon {
+    font-size: 1.4rem !important;
+  }
+  
+  .adminButton {
+    width: 100% !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+    margin: 0.3rem 0 !important;
+  }
 }

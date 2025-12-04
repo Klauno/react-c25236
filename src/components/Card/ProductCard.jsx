@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
 
   const stockRestante = calcularStockRestante();
 
-  // Mostrar toast cuando el stock llegue a 0 y no se haya mostrado antes
+  
   useEffect(() => {
     if (stockRestante <= 0 && !toastShown) {
       toast.error(`❌ No hay más stock para "${product.title}"`, {
@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
       setToastShown(true);
     }
     if (stockRestante > 0 && toastShown) {
-      setToastShown(false); // Reset para que pueda volver a mostrarse si vuelve stock
+      setToastShown(false); 
     }
   }, [stockRestante, toastShown, product.title]);
 
@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
     }
 
     if (stockRestante <= 0) {
-      // No repetir el toast aquí porque ya lo maneja el useEffect
+      
       return;
     }
 
