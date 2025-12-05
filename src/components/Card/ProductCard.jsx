@@ -112,7 +112,7 @@ const ProductCard = ({ product }) => {
           <Modal.Title>{product.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{product.descripcion || "No hay descripción disponible."}</p>
+          <p>{product.description || "No hay descripción disponible."}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
