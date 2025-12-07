@@ -97,53 +97,31 @@ const Cart = () => {
                     </Col>
 
                     {/* Título */}
-                    <Col xs={4} md={4}>
+                    <Col xs={5} md={4}>
                       <h6 className="cart-item-title">{item.title}</h6>
                       <small className="text-muted">{item.category}</small>
                     </Col>
 
-                    {/* Precio fijo */}
+                    {/* Precio */}
                     <Col xs={2} className="cart-price">
                       ${Number(item.price).toFixed(2)}
                     </Col>
 
                     {/* Cantidad */}
-                    <Col xs={3} md={2}>
+                    <Col xs={5} md={2}>
                       <div className="cart-quantity-wrapper">
-                        <Button 
-                          size="sm"
-                          onClick={() => handleDecrease(item)}
-                          className="cart-quantity-btn"
-                        >
-                          -
-                        </Button>
-
-                        <input
-                          type="text"
-                          value={item.quantity}
-                          readOnly
-                          className="cart-quantity-input"
-                        />
-
-                        <Button
-                          size="sm"
-                          className={`cart-quantity-btn ${sinStock ? 'opacity-50' : ''}`}
-                          onClick={() => handleIncrease(item)}
-                          disabled={sinStock}
-                        >
-                          +
-                        </Button>
+                        <Button size="sm" onClick={() => handleDecrease(item)} className="cart-quantity-btn">-</Button>
+                        <input type="text" value={item.quantity} readOnly className="cart-quantity-input" />
+                        <Button size="sm" onClick={() => handleIncrease(item)} className={`cart-quantity-btn ${sinStock ? 'opacity-50' : ''}`} disabled={sinStock}>+</Button>
                       </div>
 
-                      {/* Stock */}
                       <small className={`cart-item-stock ${sinStock ? 'text-danger fw-bold' : 'text-info'}`}>
-                        📦 {stockRestante}/{item.cantidad} disponibles
-                        {sinStock && ' (agotado)'}
+                        📦 {stockRestante}/{item.cantidad} disponibles {sinStock && "(agotado)"}
                       </small>
                     </Col>
 
-                    {/* Eliminar */}
-                    <Col xs={1} className="text-end">
+                    {/* Botón eliminar */}
+                    <Col xs={12} md={1} className="text-end col-remove">
                       <Button onClick={() => handleDeleteClick(item)} className="cart-remove-btn">
                         <FaTrash />
                       </Button>
@@ -189,11 +167,7 @@ const Cart = () => {
       </Modal>
 
       {/* Modal cliente */}
-      <ClienteModal
-        show={showClienteModal}
-        onClose={() => setShowClienteModal(false)}
-        onSuccess={handleClienteGuardado}
-      />
+      <ClienteModal show={showClienteModal} onClose={() => setShowClienteModal(false)} onSuccess={handleClienteGuardado} />
     </>
   );
 };
