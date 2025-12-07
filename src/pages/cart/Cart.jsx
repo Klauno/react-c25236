@@ -39,7 +39,6 @@ const Cart = () => {
     }
   };
 
-  // 🔥 BLOQUEA EN 0 + ALERT
   const handleIncrease = (item) => {
     const stockRestante = getStockRemaining(item.id);
     if (stockRestante <= 0) {
@@ -81,67 +80,82 @@ const Cart = () => {
         <Card.Header className="bg-light">
           <h5 className="mb-0">Carrito de Compras</h5>
         </Card.Header>
+
         <Card.Body>
           <ListGroup variant="flush">
             {cart.map((item) => {
               const stockRestante = getStockRemaining(item.id);
               const sinStock = stockRestante <= 0;
-              
+
               return (
                 <ListGroup.Item key={item.id} className="cart-item-card py-3">
                   <Row className="align-items-center">
+
+                    {/* Imagen */}
                     <Col xs={3} md={2}>
                       <Image src={item.image} fluid thumbnail className="cart-item-image" />
                     </Col>
+
+                    {/* Título */}
                     <Col xs={4} md={4}>
-                      <h6 className="mb-1">{item.title}</h6>
+                      <h6 className="cart-item-title">{item.title}</h6>
                       <small className="text-muted">{item.category}</small>
                     </Col>
-                    <Col xs={2} className="text-end">
-                      <span className="fw-bold">${Number(item.price).toFixed(2)}</span>
+
+                    {/* Precio fijo */}
+                    <Col xs={2} className="cart-price">
+                      ${Number(item.price).toFixed(2)}
                     </Col>
+
+                    {/* Cantidad */}
                     <Col xs={3} md={2}>
-                      <div className="d-flex align-items-center">
+                      <div className="cart-quantity-wrapper">
                         <Button 
-                          size="sm" 
-                          onClick={() => handleDecrease(item)} 
+                          size="sm"
+                          onClick={() => handleDecrease(item)}
                           className="cart-quantity-btn"
                         >
                           -
                         </Button>
-                        <input 
-                          type="number" 
-                          value={item.quantity} 
-                          readOnly 
-                          className="form-control form-control-sm mx-1" 
+
+                        <input
+                          type="text"
+                          value={item.quantity}
+                          readOnly
+                          className="cart-quantity-input"
                         />
-                        <Button 
-                          size="sm" 
+
+                        <Button
+                          size="sm"
                           className={`cart-quantity-btn ${sinStock ? 'opacity-50' : ''}`}
                           onClick={() => handleIncrease(item)}
                           disabled={sinStock}
-                          title={sinStock ? "Sin stock disponible" : "Agregar más"}
                         >
                           +
                         </Button>
                       </div>
-                     
-                      <small className={`cart-item-stock mt-1 d-block ${sinStock ? 'text-danger fw-bold' : 'text-info'}`}>
+
+                      {/* Stock */}
+                      <small className={`cart-item-stock ${sinStock ? 'text-danger fw-bold' : 'text-info'}`}>
                         📦 {stockRestante}/{item.cantidad} disponibles
                         {sinStock && ' (agotado)'}
                       </small>
                     </Col>
+
+                    {/* Eliminar */}
                     <Col xs={1} className="text-end">
                       <Button onClick={() => handleDeleteClick(item)} className="cart-remove-btn">
                         <FaTrash />
                       </Button>
                     </Col>
+
                   </Row>
                 </ListGroup.Item>
               );
             })}
           </ListGroup>
 
+          {/* Panel total */}
           <div className="mt-4 cart-total-panel">
             <Row className="justify-content-end">
               <Col xs={12} md={4}>
@@ -149,12 +163,14 @@ const Cart = () => {
                   <h5>Total:</h5>
                   <h4 className="text-primary">${calculateTotal().toFixed(2)}</h4>
                 </div>
+
                 <Button className="cart-finalize-btn w-100" onClick={handleOpenClienteModal}>
                   Finalizar Compra
                 </Button>
               </Col>
             </Row>
           </div>
+
         </Card.Body>
       </Card>
 

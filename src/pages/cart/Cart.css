@@ -30,6 +30,14 @@
   font-weight: 600;
   font-size: 0.95rem;
   color: #4b0082 !important;
+
+  /* Previene que el título empuje el precio hacia abajo */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+    line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ===== BUTTONS ===== */
@@ -74,6 +82,26 @@
   border: 1px solid #d1a3ff !important;
   padding: 2px !important;
   background-color: #f7f0fc !important;
+  color: #4b0082 !important;
+}
+
+/* Wrapper para evitar que los botones de cantidad rompan la fila */
+.cart-quantity-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 110px;
+}
+
+/* ===== PRICE (EVITAR QUE SE PARTA EN DOS LÍNEAS) ===== */
+.cart-price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;     /* evita salto de línea */
+  min-width: 80px;         /* evita que se rompa */
+  font-weight: bold;
   color: #4b0082 !important;
 }
 
@@ -123,8 +151,6 @@
 /* ======================================================== */
 /*                  🔥 MOBILE FIRST FIXES                   */
 /* ======================================================== */
-
-/* ===== General mobile spacing ===== */
 @media (max-width: 480px) {
   .cart-item-card {
     padding: 10px !important;
@@ -135,7 +161,6 @@
   }
 }
 
-/* ===== Stack columns on very small screens ===== */
 @media (max-width: 400px) {
   .cart-item-card .row {
     flex-direction: column;
@@ -156,13 +181,12 @@
   }
 
   .cart-price {
-    display: block !important;
-    margin-top: 4px !important;
+    justify-content: center !important;
+    min-width: 60px !important;
     font-size: 1rem !important;
   }
 }
 
-/* ===== Slightly larger phones ===== */
 @media (max-width: 540px) {
   .cart-item-image {
     max-height: 70px;
