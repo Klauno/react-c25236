@@ -1,16 +1,14 @@
-/* ===== Contenedor principal ===== */
 .adminContainer {
+  padding: 2rem 1rem;
   background: linear-gradient(135deg, #f9f5fc 0%, #e8daf2 100%);
   min-height: 100vh;
-  padding: 2rem 1rem;
 }
 
-/* ===== Header ===== */
 .headerSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
@@ -25,23 +23,25 @@
   color: #4b0082;
   font-weight: 700;
   font-size: clamp(1.5rem, 4vw, 2.5rem);
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(142, 68, 173, 0.2);
 }
 
-/* ===== Tabla ===== */
-.tableContainer {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(142, 68, 173, 0.15);
-  overflow-x: auto; /* scroll solo si es necesario */
-  border: 1px solid rgba(142, 68, 173, 0.1);
+.btnAgregar {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
 }
 
+.btnAgregar:hover {
+  background: linear-gradient(135deg, #9046af, #a569bd);
+}
+
+/* Tabla Desktop */
 .productsTable {
-  margin: 0 !important;
-  width: 100%;
-  border-collapse: separate;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .productsTable thead th {
@@ -49,39 +49,14 @@
   color: white;
   font-weight: 600;
   text-align: center;
-  padding: 1rem 0.75rem;
   border: none;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
 }
 
-.productsTable tbody tr {
-  transition: all 0.2s ease;
-}
-
-.productsTable tbody tr:hover {
-  background-color: #f8f4ff;
-  transform: scale(1.01);
-}
-
-.productRow {
-  border-bottom: 1px solid #e9d5f5;
-}
-
-.productTitle {
-  font-weight: 600;
-  color: #4b0082;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.productPrice {
-  font-weight: 700;
-  color: #8e44ad;
-  font-size: 1.1rem;
+.productsTable tbody td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.5rem 0.75rem;
 }
 
 .productImage {
@@ -89,188 +64,65 @@
   height: 50px;
   object-fit: cover;
   border-radius: 10px;
-  border: 2px solid #d9b3ff;
-  box-shadow: 0 2px 8px rgba(142, 68, 173, 0.2);
-}
-
-.noImage {
-  color: #999;
-  font-size: 0.85rem;
-  font-style: italic;
-}
-
-.actionsContainer {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-/* ===== Botones ===== */
-.btnEditar, .btnEliminar {
-  border: none !important;
-  color: white !important;
-  border-radius: 12px !important;
-  font-weight: 600 !important;
-  padding: 0.5rem 1rem !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  text-transform: none !important;
-  font-size: 0.85rem;
 }
 
 .btnEditar {
-  background: linear-gradient(135deg, #8e44ad, #9b59b6) !important;
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
 }
 
 .btnEditar:hover {
-  background: linear-gradient(135deg, #9046af, #a569bd) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.4) !important;
 }
 
 .btnEliminar {
-  background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
 }
 
 .btnEliminar:hover {
-  background: linear-gradient(135deg, #c0392b, #a93226) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4) !important;
 }
 
-.btnSm {
-  padding: 0.4rem 0.8rem !important;
-  font-size: 0.8rem !important;
+/* Cards Mobile */
+.mobileCard {
+  margin-bottom: 1rem;
 }
 
-.btnLg {
-  padding: 0.75rem 2rem !important;
-  font-size: 1rem !important;
+.productImageMobile {
   width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
-.btnCancel {
-  background: #6c757d !important;
-  border: none !important;
-  color: white !important;
-  border-radius: 12px !important;
-  padding: 0.75rem 1.5rem !important;
-  font-weight: 600 !important;
+.productDesc {
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
 }
 
-.btnCancel:hover {
-  background: #5a6268 !important;
-  transform: translateY(-2px);
+.productPriceMobile {
+  font-weight: bold;
+  color: #8e44ad;
 }
 
-/* ===== Modal ===== */
-.modalCustom .modal-content {
-  border-radius: 20px;
-  border: none;
-  box-shadow: 0 20px 60px rgba(142, 68, 173, 0.3);
-}
-
-.modalHeader {
-  background: linear-gradient(135deg, #8e44ad, #9b59b6);
-  color: white;
-  border-radius: 20px 20px 0 0 !important;
-  border-bottom: none;
-}
-
-.modalTitle {
-  font-weight: 700;
-  font-size: 1.3rem;
-}
-
-.modalBody {
-  padding: 2rem;
-  background: #f9f5fc;
-}
-
-.formLabel {
-  color: #4b0082;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.formControl {
-  border: 2px solid #e1d4f2 !important;
-  border-radius: 12px !important;
-  padding: 0.75rem 1rem !important;
-  font-size: 1rem;
-  transition: all 0.3s ease !important;
-}
-
-.formControl:focus {
-  border-color: #8e44ad !important;
-  box-shadow: 0 0 0 0.2rem rgba(142, 68, 173, 0.25) !important;
-}
-
-.modalActions {
+.actionsMobile {
   display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-/* ===== Responsive Mobile ===== */
-@media (max-width: 768px) {
-  .headerSection h2 {
-    text-align: center;
-  }
-
-  /* Apilar tabla y mostrar labels */
-  .productsTable thead {
-    display: none;
-  }
-
-  .productsTable tbody tr {
-    display: block;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #e9d5f5;
-  }
-
-  .productsTable tbody td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
-  }
-
-  .productsTable tbody td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    flex: 1;
-    color: #4b0082;
-  }
-
-  .actionsContainer {
-    justify-content: flex-end;
-  }
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 576px) {
   .adminContainer {
     padding: 1rem 0.5rem;
-  }
-  
-  .productsTable tbody td {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
-
-  .productImage {
-    width: 40px;
-    height: 40px;
-  }
-
-  .modalBody {
-    padding: 1.5rem;
-  }
-
-  .actionsContainer {
-    flex-direction: row;
-    gap: 0.5rem;
   }
 }

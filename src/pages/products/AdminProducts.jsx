@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Table, Modal, Form, Container, Alert, Row, Col } from "react-bootstrap";
+import { Button, Table, Modal, Form, Container, Alert, Row, Col, Card } from "react-bootstrap";
 import {
   getProducts,
   createProduct,
@@ -55,8 +55,11 @@ export const AdminProducts = () => {
       return;
     }
     try {
-      if (currentProduct) await updateProduct(currentProduct.id, formData);
-      else await createProduct(formData);
+      if (currentProduct) {
+        await updateProduct(currentProduct.id, formData);
+      } else {
+        await createProduct(formData);
+      }
       setShowModal(false);
       fetchProducts();
       resetForm();
@@ -101,101 +104,117 @@ export const AdminProducts = () => {
   if (loading) return <LoadingSpinner text="Cargando información..." />;
 
   return (
-    <Container className={`${styles.adminContainer} py-4`}>
+    <Container className={styles.adminContainer}>
       <Row className="justify-content-center">
         <Col xs={12} lg={10}>
-          <div className={`${styles.headerSection} mb-4`}>
+          <div className={styles.headerSection}>
             <h2 className={styles.pageTitle}>Administrar Productos</h2>
-            <Button className={styles.btnEditar} onClick={() => setShowModal(true)}>
+            <Button className={styles.btnAgregar} onClick={() => setShowModal(true)}>
               ➕ Agregar Producto
             </Button>
           </div>
 
-          {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
+          {error && <Alert variant="danger">{error}</Alert>}
 
-          <div className={styles.tableContainer}>
-            <Table responsive className={`${styles.productsTable} mb-0`}>
+          {/* ===== Tabla en desktop ===== */}
+          <div className="d-none d-lg-block">
+            <Table responsive className={styles.productsTable}>
               <thead>
                 <tr>
                   <th>Nombre</th>
                   <th>Precio</th>
-                  <th className="d-none d-lg-table-cell">Descripción</th>
+                  <th>Descripción</th>
                   <th>Imagen</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id} className={styles.productRow}>
-                    <td data-label="Nombre" className={styles.productTitle}>{product.title}</td>
-                    <td data-label="Precio" className={styles.productPrice}>${parseFloat(product.price).toFixed(2)}</td>
-                    <td data-label="Descripción" className="d-none d-lg-table-cell">{product.description}</td>
-                    <td data-label="Imagen">
+                  <tr key={product.id}>
+                    <td>{product.title}</td>
+                    <td>${parseFloat(product.price).toFixed(2)}</td>
+                    <td>{product.description}</td>
+                    <td>
                       {product.image ? (
-                        <img
-                          src={product.image}
-                          alt={product.title}
-                          className={styles.productImage}
-                        />
+                        <img src={product.image} alt={product.title} className={styles.productImage} />
                       ) : (
                         <span className={styles.noImage}>Sin imagen</span>
                       )}
                     </td>
-                    <td data-label="Acciones">
-                      <div className={styles.actionsContainer}>
-                        <Button
-                          className={`${styles.btnEditar} ${styles.btnSm}`}
-                          size="sm"
-                          onClick={() => handleEdit(product)}
-                        >
-                          ✏️ Editar
-                        </Button>
-                        <Button
-                          className={`${styles.btnEliminar} ${styles.btnSm}`}
-                          size="sm"
-                          onClick={() => handleDelete(product.id)}
-                        >
-                          🗑️ Eliminar
-                        </Button>
-                      </div>
+                    <td>
+                      <Button size="sm" className={styles.btnEditar} onClick={() => handleEdit(product)}>
+                        ✏️ Editar
+                      </Button>
+                      <Button size="sm" className={styles.btnEliminar} onClick={() => handleDelete(product.id)}>
+                        🗑️ Eliminar
+                      </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           </div>
+
+          {/* ===== Cards en mobile ===== */}
+          <div className="d-block d-lg-none">
+            {products.map((product) => (
+              <Card key={product.id} className={styles.mobileCard}>
+                <Card.Body>
+                  <Row>
+                    <Col xs={4}>
+                      {product.image ? (
+                        <img src={product.image} alt={product.title} className={styles.productImageMobile} />
+                      ) : (
+                        <span className={styles.noImage}>Sin imagen</span>
+                      )}
+                    </Col>
+                    <Col xs={8}>
+                      <h5>{product.title}</h5>
+                      <p className={styles.productDesc}>{product.description}</p>
+                      <p className={styles.productPriceMobile}>${parseFloat(product.price).toFixed(2)}</p>
+                      <div className={styles.actionsMobile}>
+                        <Button size="sm" className={styles.btnEditar} onClick={() => handleEdit(product)}>
+                          ✏️ Editar
+                        </Button>
+                        <Button size="sm" className={styles.btnEliminar} onClick={() => handleDelete(product.id)}>
+                          🗑️ Eliminar
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
         </Col>
       </Row>
 
+      {/* ===== Modal ===== */}
       <Modal
         show={showModal}
         onHide={() => {
           setShowModal(false);
           resetForm();
         }}
-        className={styles.modalCustom}
         centered
       >
-        <Modal.Header closeButton className={styles.modalHeader}>
-          <Modal.Title className={styles.modalTitle}>
-            {currentProduct ? "✏️ Editar Producto" : "➕ Nuevo Producto"}
-          </Modal.Title>
+        <Modal.Header closeButton>
+          <Modal.Title>{currentProduct ? "✏️ Editar Producto" : "➕ Nuevo Producto"}</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={styles.modalBody}>
+        <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label className={styles.formLabel}>Nombre del Producto</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
                 required
-                className={styles.formControl}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className={styles.formLabel}>Precio ($)</Form.Label>
+              <Form.Label>Precio ($)</Form.Label>
               <Form.Control
                 type="number"
                 step="0.01"
@@ -203,45 +222,31 @@ export const AdminProducts = () => {
                 value={formData.price}
                 onChange={handleInputChange}
                 required
-                className={styles.formControl}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className={styles.formLabel}>Descripción</Form.Label>
+              <Form.Label>Descripción</Form.Label>
               <Form.Control
                 as="textarea"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={3}
-                className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group className="mb-4">
-              <Form.Label className={styles.formLabel}>URL de la Imagen</Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label>URL de la Imagen</Form.Label>
               <Form.Control
                 type="url"
                 name="image"
                 value={formData.image}
                 onChange={handleInputChange}
-                className={styles.formControl}
                 placeholder="https://ejemplo.com/imagen.jpg"
               />
             </Form.Group>
-            <div className={styles.modalActions}>
-              <Button className={`${styles.btnEditar} ${styles.btnLg}`} type="submit">
-                💾 Guardar Producto
-              </Button>
-              <Button
-                variant="secondary"
-                className={styles.btnCancel}
-                onClick={() => {
-                  setShowModal(false);
-                  resetForm();
-                }}
-              >
-                ❌ Cancelar
-              </Button>
+            <div className="d-flex gap-2 mt-3">
+              <Button type="submit" className={styles.btnEditar}>💾 Guardar</Button>
+              <Button variant="secondary" onClick={() => {setShowModal(false); resetForm();}}>❌ Cancelar</Button>
             </div>
           </Form>
         </Modal.Body>
