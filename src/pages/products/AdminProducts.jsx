@@ -44,27 +44,19 @@ export const AdminProducts = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!isAdmin) {
       toast.error("Solo los administradores pueden modificar o agregar productos");
       setShowModal(false);
       return;
     }
-
     try {
-      if (currentProduct) {
-        await updateProduct(currentProduct.id, formData);
-      } else {
-        await createProduct(formData);
-      }
+      if (currentProduct) await updateProduct(currentProduct.id, formData);
+      else await createProduct(formData);
       setShowModal(false);
       fetchProducts();
       resetForm();
@@ -102,18 +94,11 @@ export const AdminProducts = () => {
   };
 
   const resetForm = () => {
-    setFormData({
-      title: "",
-      price: "",
-      description: "",
-      image: "",
-    });
+    setFormData({ title: "", price: "", description: "", image: "" });
     setCurrentProduct(null);
   };
 
-  if (loading) {
-    return <LoadingSpinner text="Cargando información..." />;
-  }
+  if (loading) return <LoadingSpinner text="Cargando información..." />;
 
   return (
     <Container className={`${styles.adminContainer} py-4`}>
@@ -121,10 +106,7 @@ export const AdminProducts = () => {
         <Col xs={12} lg={10}>
           <div className={`${styles.headerSection} mb-4`}>
             <h2 className={styles.pageTitle}>Administrar Productos</h2>
-            <Button
-              className={styles.btnEditar}
-              onClick={() => setShowModal(true)}
-            >
+            <Button className={styles.btnEditar} onClick={() => setShowModal(true)}>
               ➕ Agregar Producto
             </Button>
           </div>
@@ -145,10 +127,10 @@ export const AdminProducts = () => {
               <tbody>
                 {products.map((product) => (
                   <tr key={product.id} className={styles.productRow}>
-                    <td className={styles.productTitle}>{product.title}</td>
-                    <td className={styles.productPrice}>${parseFloat(product.price).toFixed(2)}</td>
-                    <td className="d-none d-lg-table-cell">{product.description}</td>
-                    <td>
+                    <td data-label="Nombre" className={styles.productTitle}>{product.title}</td>
+                    <td data-label="Precio" className={styles.productPrice}>${parseFloat(product.price).toFixed(2)}</td>
+                    <td data-label="Descripción" className="d-none d-lg-table-cell">{product.description}</td>
+                    <td data-label="Imagen">
                       {product.image ? (
                         <img
                           src={product.image}
@@ -159,7 +141,7 @@ export const AdminProducts = () => {
                         <span className={styles.noImage}>Sin imagen</span>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Acciones">
                       <div className={styles.actionsContainer}>
                         <Button
                           className={`${styles.btnEditar} ${styles.btnSm}`}

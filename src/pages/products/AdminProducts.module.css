@@ -1,9 +1,11 @@
+/* ===== Contenedor principal ===== */
 .adminContainer {
   background: linear-gradient(135deg, #f9f5fc 0%, #e8daf2 100%);
   min-height: 100vh;
   padding: 2rem 1rem;
 }
 
+/* ===== Header ===== */
 .headerSection {
   display: flex;
   flex-direction: column;
@@ -27,16 +29,19 @@
   text-shadow: 0 2px 4px rgba(142, 68, 173, 0.2);
 }
 
+/* ===== Tabla ===== */
 .tableContainer {
   background: white;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(142, 68, 173, 0.15);
-  overflow: hidden;
+  overflow-x: auto; /* scroll solo si es necesario */
   border: 1px solid rgba(142, 68, 173, 0.1);
 }
 
 .productsTable {
   margin: 0 !important;
+  width: 100%;
+  border-collapse: separate;
 }
 
 .productsTable thead th {
@@ -100,6 +105,7 @@
   flex-wrap: wrap;
 }
 
+/* ===== Botones ===== */
 .btnEditar, .btnEliminar {
   border: none !important;
   color: white !important;
@@ -157,6 +163,7 @@
   transform: translateY(-2px);
 }
 
+/* ===== Modal ===== */
 .modalCustom .modal-content {
   border-radius: 20px;
   border: none;
@@ -206,32 +213,64 @@
   margin-top: 1.5rem;
 }
 
+/* ===== Responsive Mobile ===== */
+@media (max-width: 768px) {
+  .headerSection h2 {
+    text-align: center;
+  }
+
+  /* Apilar tabla y mostrar labels */
+  .productsTable thead {
+    display: none;
+  }
+
+  .productsTable tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e9d5f5;
+  }
+
+  .productsTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+
+  .productsTable tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    flex: 1;
+    color: #4b0082;
+  }
+
+  .actionsContainer {
+    justify-content: flex-end;
+  }
+}
+
 @media (max-width: 576px) {
   .adminContainer {
     padding: 1rem 0.5rem;
   }
   
-  .productsTable thead th {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.8rem;
+  .productsTable tbody td {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
-  
+
   .productImage {
     width: 40px;
     height: 40px;
   }
-  
-  .actionsContainer {
-    flex-direction: column;
-  }
-  
+
   .modalBody {
     padding: 1.5rem;
   }
-}
 
-@media (max-width: 768px) {
-  .headerSection h2 {
-    text-align: center;
+  .actionsContainer {
+    flex-direction: row;
+    gap: 0.5rem;
   }
 }
