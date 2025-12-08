@@ -1,0 +1,28 @@
+/* Home.css */
+.category-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.category-btn {
+  border-radius: 20px;
+  border: 2px solid #8e44ad !important;
+  background-color: #e6d6f1 !important; /* lila suave inicial */
+  color: #4b0082 !important;            /* texto lila oscuro */
+  font-weight: 600;
+  padding: 0.35rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  background-color: #d8b9f0; /* lila un poco más intenso al pasar mouse */
+  color: #4b0082;
+  border-color: #8e44ad;
+}
+
+.category-btn.selected {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6); /* degradado lila fuerte */
+  color: white;
+  border-color: #8e44ad;
+}

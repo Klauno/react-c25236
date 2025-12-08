@@ -1,27 +1,29 @@
-import { Container, Row, Col, Alert, Form } from 'react-bootstrap';
+// Home.jsx
+import { Container, Row, Col, Alert, Form, ButtonGroup, Button } from 'react-bootstrap';
 import ProductCard from '../components/Card/ProductCard';
 import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { API_URL_PRODUCTS } from '../config/constants';
-
-const API_URL = API_URL_PRODUCTS;
+import './Home.css'; // <- Nuevo archivo CSS para los botones
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const categories = ['Todos', 'Indumentaria', 'Calzado', 'Accesorios'];
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL_PRODUCTS);
         if (!response.ok) throw new Error('Error al cargar productos');
         const data = await response.json();
         setProducts(data);
-        // Inicialmente mostrar todos los productos
-        setFilteredProducts(data); 
+        setFilteredProducts(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,22 +34,16 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  // Filtrar productos cuando cambia el término de búsqueda
   useEffect(() => {
-    if (searchTerm === '') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(product =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [searchTerm, products]);
+    let filtered = [...products];
+    if (selectedCategory !== 'Todos') filtered = filtered.filter(p => p.category === selectedCategory);
+    if (searchTerm.trim() !== '') filtered = filtered.filter(p =>
+      p.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [searchTerm, selectedCategory, products]);
 
-  if (loading) {
-    return <LoadingSpinner text="Cargando productos..." />;
-  }
-
+  if (loading) return <LoadingSpinner text="Cargando productos..." />;
   if (error) {
     return (
       <Container className="py-5">
@@ -61,17 +57,31 @@ const Home = () => {
 
   return (
     <Container className="py-4">
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
         <h2 className="mb-3 mb-md-0">Productos Disponibles</h2>
         
-        {/* Campo de búsqueda */}
-        <Form.Control
-          type="text"
-          placeholder="Buscar producto..."
-          style={{ width: '300px' }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div className="d-flex flex-wrap gap-2 align-items-center">
+          {/* Botones de categoría con clases personalizadas */}
+          <ButtonGroup className="category-buttons">
+            {categories.map(cat => (
+              <Button
+                key={cat}
+                className={`category-btn ${selectedCategory === cat ? 'selected' : ''}`}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </Button>
+            ))}
+          </ButtonGroup>
+
+          <Form.Control
+            type="text"
+            placeholder="Buscar producto..."
+            style={{ minWidth: '200px', maxWidth: '300px' }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
 
       <Row xs={1} md={2} lg={3} xl={4} className="g-4">
@@ -84,8 +94,8 @@ const Home = () => {
         ) : (
           <Col xs={12}>
             <Alert variant="info" className="text-center">
-              {searchTerm 
-                ? `No se encontraron productos para "${searchTerm}"`
+              {searchTerm || selectedCategory !== 'Todos'
+                ? 'No se encontraron productos para esos filtros'
                 : 'No hay productos disponibles'}
             </Alert>
           </Col>
