@@ -1,37 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form, Button, Alert } from "react-bootstrap";
+import { useAuth } from "../hooks/useAuth"; // Asumo que tienes useAuth para obtener email del usuario
 
 const ClienteModal = ({ show, onClose, onSuccess }) => {
+  const { user } = useAuth(); // user.email será el email del usuario logueado
+
   const [form, setForm] = useState({
-    nombre: "",
+    nombreCompleto: "",
     telefono: "",
     email: "",
     direccion: "",
   });
 
   const [touched, setTouched] = useState({
-    nombre: false,
+    nombreCompleto: false,
     email: false,
   });
 
   const [isValid, setIsValid] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
-  // Validación: habilita botón solo si nombre y email no están vacíos
+  // Validación: habilita botón solo si nombre y email no están vacíos y email coincide
   useEffect(() => {
-    if (form.nombre.trim() !== "" && form.email.trim() !== "") {
-      setIsValid(true);
+    const nombreValido = form.nombreCompleto.trim() !== "";
+    const emailValido = form.email.trim() !== "";
+    const emailCoincide = form.email === user.email;
+
+    if (!emailCoincide && form.email.trim() !== "") {
+      setEmailError("El email ingresado no coincide con tu email registrado");
     } else {
-      setIsValid(false);
+      setEmailError("");
     }
-  }, [form.nombre, form.email]);
+
+    setIsValid(nombreValido && emailValido && emailCoincide);
+  }, [form, user.email]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleBlur = (e) => {
-    if (e.target.name === "nombre" || e.target.name === "email") {
-      setTouched({ ...touched, [e.target.name]: true });
+    const { name } = e.target;
+    if (name === "nombreCompleto" || name === "email") {
+      setTouched({ ...touched, [name]: true });
     }
   };
 
@@ -42,9 +53,7 @@ const ClienteModal = ({ show, onClose, onSuccess }) => {
   };
 
   const inputClass = (field) =>
-    touched[field] && form[field].trim() === ""
-      ? "is-invalid"
-      : "";
+    touched[field] && form[field].trim() === "" ? "is-invalid" : "";
 
   return (
     <Modal show={show} onHide={onClose} centered>
@@ -59,16 +68,16 @@ const ClienteModal = ({ show, onClose, onSuccess }) => {
               Nombre completo <span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Control
-              name="nombre"
+              name="nombreCompleto"
               type="text"
-              value={form.nombre}
+              value={form.nombreCompleto}
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              className={inputClass("nombre")}
+              className={inputClass("nombreCompleto")}
             />
             <Form.Control.Feedback type="invalid">
-              El nombre es obligatorio
+              El nombre completo es obligatorio
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -98,6 +107,7 @@ const ClienteModal = ({ show, onClose, onSuccess }) => {
             <Form.Control.Feedback type="invalid">
               El email es obligatorio
             </Form.Control.Feedback>
+            {emailError && <Alert variant="danger" className="mt-2">{emailError}</Alert>}
           </Form.Group>
 
           <Form.Group>

@@ -18,11 +18,14 @@ export const AdminProducts = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
   const { isAdmin } = useAuth();
+
   const [formData, setFormData] = useState({
     title: "",
     price: "",
     description: "",
     image: "",
+    category: "",
+    cantidad: "",        // 👈 agregado
   });
 
   useEffect(() => {
@@ -76,6 +79,8 @@ export const AdminProducts = () => {
       price: product.price,
       description: product.description,
       image: product.image,
+      category: product.category || "",
+      cantidad: product.cantidad || "",   // 👈 agregado
     });
     setShowModal(true);
   };
@@ -97,7 +102,14 @@ export const AdminProducts = () => {
   };
 
   const resetForm = () => {
-    setFormData({ title: "", price: "", description: "", image: "" });
+    setFormData({
+      title: "",
+      price: "",
+      description: "",
+      image: "",
+      category: "",
+      cantidad: "",    // 👈 agregado
+    });
     setCurrentProduct(null);
   };
 
@@ -116,7 +128,7 @@ export const AdminProducts = () => {
 
           {error && <Alert variant="danger">{error}</Alert>}
 
-          {/* ===== Tabla en desktop ===== */}
+          {/* ===== Tabla Desktop ===== */}
           <div className="d-none d-lg-block">
             <Table responsive className={styles.productsTable}>
               <thead>
@@ -124,6 +136,8 @@ export const AdminProducts = () => {
                   <th>Nombre</th>
                   <th>Precio</th>
                   <th>Descripción</th>
+                  <th>Categoría</th>
+                  <th>Cantidad</th>
                   <th>Imagen</th>
                   <th>Acciones</th>
                 </tr>
@@ -134,6 +148,8 @@ export const AdminProducts = () => {
                     <td>{product.title}</td>
                     <td>${parseFloat(product.price).toFixed(2)}</td>
                     <td>{product.description}</td>
+                    <td>{product.category}</td>
+                    <td>{product.cantidad}</td>
                     <td>
                       {product.image ? (
                         <img src={product.image} alt={product.title} className={styles.productImage} />
@@ -155,7 +171,7 @@ export const AdminProducts = () => {
             </Table>
           </div>
 
-          {/* ===== Cards en mobile ===== */}
+          {/* ===== Mobile Cards ===== */}
           <div className="d-block d-lg-none">
             {products.map((product) => (
               <Card key={product.id} className={styles.mobileCard}>
@@ -171,6 +187,8 @@ export const AdminProducts = () => {
                     <Col xs={8}>
                       <h5>{product.title}</h5>
                       <p className={styles.productDesc}>{product.description}</p>
+                      <p><strong>Categoría:</strong> {product.category}</p>
+                      <p><strong>Cantidad:</strong> {product.cantidad}</p>
                       <p className={styles.productPriceMobile}>${parseFloat(product.price).toFixed(2)}</p>
                       <div className={styles.actionsMobile}>
                         <Button size="sm" className={styles.btnEditar} onClick={() => handleEdit(product)}>
@@ -203,6 +221,7 @@ export const AdminProducts = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
+
             <Form.Group className="mb-3">
               <Form.Label>Nombre</Form.Label>
               <Form.Control
@@ -213,6 +232,7 @@ export const AdminProducts = () => {
                 required
               />
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>Precio ($)</Form.Label>
               <Form.Control
@@ -224,6 +244,20 @@ export const AdminProducts = () => {
                 required
               />
             </Form.Group>
+
+            {/* === NUEVO CAMPO CANTIDAD === */}
+            <Form.Group className="mb-3">
+              <Form.Label>Cantidad</Form.Label>
+              <Form.Control
+                type="number"
+                name="cantidad"
+                value={formData.cantidad}
+                onChange={handleInputChange}
+                required
+                min="0"
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>Descripción</Form.Label>
               <Form.Control
@@ -234,6 +268,7 @@ export const AdminProducts = () => {
                 rows={3}
               />
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>URL de la Imagen</Form.Label>
               <Form.Control
@@ -244,10 +279,29 @@ export const AdminProducts = () => {
                 placeholder="https://ejemplo.com/imagen.jpg"
               />
             </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Categoría</Form.Label>
+              <Form.Select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Seleccione una categoría</option>
+                <option value="Indumentaria">Indumentaria</option>
+                <option value="Calzado">Calzado</option>
+                <option value="Accesorio">Accesorio</option>
+              </Form.Select>
+            </Form.Group>
+
             <div className="d-flex gap-2 mt-3">
               <Button type="submit" className={styles.btnEditar}>💾 Guardar</Button>
-              <Button variant="secondary" onClick={() => {setShowModal(false); resetForm();}}>❌ Cancelar</Button>
+              <Button variant="secondary" onClick={() => {setShowModal(false); resetForm();}}>
+                ❌ Cancelar
+              </Button>
             </div>
+
           </Form>
         </Modal.Body>
       </Modal>
